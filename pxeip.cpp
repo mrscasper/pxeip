@@ -14,8 +14,19 @@ using namespace std;
 void help() {
 }
 
-string ipToPXE(string ip) {
-  vector<unsigned char> octets[4];
+const long iptoi(const string& s)
+{
+  string buff{""};
+  long addr = 0;
+ 
+  for(auto n:s)
+  {
+    if(n != '.') buff+=n; else
+    if(n == '.' && buff != "") { addr = (addr * 256) + stoi(buff); buff = ""; }
+  }
+  if(buff != "") addr = (addr * 256) + stoi(buff);
+ 
+  return addr;
 }
 
 
@@ -34,19 +45,10 @@ if(argc != 2)
   }
   in_addr * address = (in_addr * )record->h_addr;
   string ip_address = inet_ntoa(* address);
+  long ip = iptoi(ip_address);
 
-  // get the current time
-  time_t rawtime;
-  tm * ptm;
-  time ( &rawtime );
-  ptm = gmtime ( &rawtime );
+  cout << hex << uppercase << ip << "\n";
   
-  cout << argv[1] << " (" << ip_address << ")\n";
-  
-  // log this information to ipaddr.log
-  ofstream ipaddr_log("ipaddr.log", ios::app);
-  ipaddr_log << (ptm->tm_hour) << ":" << (ptm->tm_min) << " " << argv[1] << " (" << ip_address << ")" << endl;
-  ipaddr_log.close();
   return 0;
 }
 

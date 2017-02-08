@@ -8,7 +8,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fstream>
-#include <time.h>
 using namespace std;
 
 void help() {
@@ -31,12 +30,6 @@ const long iptoi(const string& s)
 
 
 int main(int argc, char *argv[]) {
-if(argc != 2)
-  {
-    printf("usage: %s <hostname>\n", argv[0], argv[1]);
-    exit(1);
-  }
-    
   hostent * record = gethostbyname(argv[1]);
   if(record == NULL)
   {
